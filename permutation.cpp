@@ -8,13 +8,14 @@
   the next permutation.
 ***************************************************************/
   
-void perm1(int s[], int size) {
+bool perm1(int s[], int size) {
     int m, k, p , q, i;
     m = size-2;
     while(s[m]>s[m+1])
     {
       m = m - 1;
     }
+    if (m < 0) return false;
     k = size-1;
     while(s[m] > s[k])
     {
@@ -33,4 +34,5 @@ void perm1(int s[], int size) {
       p++;
       q--;
     }
+    return true;
 }

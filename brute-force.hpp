@@ -1,6 +1,11 @@
 #ifndef BRUTE_FORCE_HPP
 #define BRUTE_FORCE_HPP
 #include "graph.hpp"
+struct BruteForceResults{
+  int tourLength;
+  float bestTour;
+  float timeToSolve;
+};
 class Solver{
   int tourLength;
   int* tour;
@@ -10,6 +15,6 @@ class Solver{
   Solver();
   Solver(Graph* graph, int tourLength);
   ~Solver();
-  float run();
+  BruteForceResults run();
 };
 #endif

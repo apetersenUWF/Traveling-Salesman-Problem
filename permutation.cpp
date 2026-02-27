@@ -1,4 +1,3 @@
-#include "permutation.hpp"
 /***************************************************************
   Ayden Petersen
   permutation.cpp
@@ -7,6 +6,7 @@
   This file contains the necessary logic to update array s with
   the next permutation.
 ***************************************************************/
+#include "permutation.hpp"
   
 bool perm1(int s[], int size) {
     int m, k, p , q, i;

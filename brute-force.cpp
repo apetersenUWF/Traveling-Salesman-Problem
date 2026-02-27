@@ -30,13 +30,13 @@
   Solver::~Solver() {
     delete [] tour;
   }
-  BruteForceResults Solver::run() {
-    BruteForceResults data;
+  BruteForceResults Solver::run() {//runs the brute force algorithm for all permutations of tours
+    BruteForceResults data;//stores tourLength, timeToSolve, and bestTour
     data.tourLength = tourLength;
-    auto start = std::chrono::high_resolution_clock::now();
+    auto start = std::chrono::high_resolution_clock::now();//times the algorithm
     while (perm1(tour, tourLength)) {
     float x = graph->getTourDistance(tour, tourLength);
-    if (x < bestTour) bestTour = x;
+    if (x < bestTour) bestTour = x;//keep track of lowest tour distance found
     }
     auto end = std::chrono::high_resolution_clock::now();
     data.bestTour = bestTour;

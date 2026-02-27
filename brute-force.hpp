@@ -2,6 +2,7 @@
 #define BRUTE_FORCE_HPP
 #include "graph.hpp"
 struct BruteForceResults{
+  int toursToSolve;
   int tourLength;
   float bestTour;
   float timeToSolve;

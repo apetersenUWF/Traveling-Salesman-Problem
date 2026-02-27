@@ -10,9 +10,9 @@
   all permutations are checked or the program has run for 5 minutes.
   It will return the distance of the tour with the lowest value.
 ***************************************************************/
-#include <chrono>//used for timing
 #include "brute-force.hpp"
 #include "permutation.hpp"
+#include "stopwatch.hpp"
   Solver::Solver() {
     tourLength = 0;
     tour = nullptr;
@@ -32,15 +32,17 @@
   }
   BruteForceResults Solver::run() {//runs the brute force algorithm for all permutations of tours
     BruteForceResults data;//stores tourLength, timeToSolve, and bestTour
+    StopWatch timer;
+    timer.start();
     data.tourLength = tourLength;
-    auto start = std::chrono::high_resolution_clock::now();//times the algorithm
     while (perm1(tour, tourLength)) {
-    float x = graph->getTourDistance(tour, tourLength);
-    if (x < bestTour) bestTour = x;//keep track of lowest tour distance found
+      data.toursToSolve++;
+      float x = graph->getTourDistance(tour, tourLength);
+      if (x < bestTour) bestTour = x;//keep track of lowest tour distance found
     }
-    auto end = std::chrono::high_resolution_clock::now();
+    timer.stop();
     data.bestTour = bestTour;
-    std::chrono::duration<double> elapsed = end - start;
-    data.timeToSolve = elapsed.count();
+    data.timeToSolve = timer.getElapsedTime();
     return data;
   }
+

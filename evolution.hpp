@@ -9,6 +9,9 @@ struct EvolutionResults{
     float mutationRate;
     float bestTour;
     double timeToSolve;
+    int toursSearched;
+    float percentOptimal;
+    float percentOptimalTime;
 };
 class Evolution{
     Graph* graph;

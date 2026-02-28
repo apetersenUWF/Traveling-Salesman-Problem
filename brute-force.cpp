@@ -33,8 +33,9 @@
   BruteForceResults Solver::run() {//runs the brute force algorithm for all permutations of tours
     BruteForceResults data;//stores tourLength, timeToSolve, and bestTour
     StopWatch timer;
-    timer.start();
     data.tourLength = tourLength;
+    data.toursToSolve = 0;
+    timer.start();
     while (perm1(tour, tourLength)) {
       data.toursToSolve++;
       float x = graph->getTourDistance(tour, tourLength);

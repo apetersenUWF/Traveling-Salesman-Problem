@@ -53,6 +53,7 @@
         data.toursPerGeneration = toursPerGeneration;
         data.generations = generations;
         data.mutationRate = mutationRate;
+        data.toursSearched = 0;
         StopWatch timer;
         timer.start();
         for (int i = 0; i < generations; i++) {
@@ -65,6 +66,7 @@
                 for (int g = 0; g < tourLength; g++) eliteChild[g] = parent[g];//copy elite to its child
                 mutate(eliteChild);
                 processTour(eliteChild);
+                data.toursSearched++;
                 j++;
             }
             while (perm1(tour, tourLength) && j < toursPerGeneration) {
@@ -72,8 +74,8 @@
                 roll *= 100;
                 if (roll <= mutationRate) mutate(tour);// if mutation rate is 25%, numbers <= 25 will mutate
                 processTour(tour);
+                data.toursSearched++;
                 j++;
-
             }
         }
         timer.stop();

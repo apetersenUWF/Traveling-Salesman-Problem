@@ -3,11 +3,15 @@
 #include "evolution.hpp"
 #include "brute-force.hpp"
 #include "graph.hpp"
+#include <vector>
 class Menu{
     Graph* cities;
     BruteForceResults runBF(int i);
     EvolutionResults runGA();
-    void printGAResult(EvolutionResults result);
+    void printGAResult(EvolutionResults& result);
+    bool createOutputFiles();
+    bool saveBFData(std::vector<BruteForceResults>& bfData);
+    bool appendGAData(EvolutionResults& gaData);
   public:
     Menu();
     ~Menu();

@@ -2,7 +2,7 @@ CXX = g++
 
 CXXFLAGS = -std=c++11 -Wall
 
-OBJS = main.o graph.o permutation.o brute-force.o menu.o evolution.o stopwatch.o
+OBJS = main.o graph.o rand.o brute-force.o menu.o evolution.o stopwatch.o
 
 EXEC = run
 
@@ -13,7 +13,7 @@ run: $(OBJS)
 
 main.o : menu.o
 graph.o: graph.hpp
-permutation.o: permutation.hpp
+rand.o: rand.hpp
 brute-force.o: brute-force.hpp graph.hpp stopwatch.hpp
 menu.o: menu.hpp graph.hpp brute-force.hpp evolution.hpp
 evolution.o: evolution.hpp graph.hpp stopwatch.hpp

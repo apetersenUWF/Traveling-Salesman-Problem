@@ -5,7 +5,7 @@ struct BruteForceResults{
   int toursToSolve;
   int tourLength;
   float bestTour;
-  float timeToSolve;
+  double timeToSolve;
 };
 class Solver{
   int tourLength;

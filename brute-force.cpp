@@ -11,7 +11,7 @@
   It will return the distance of the tour with the lowest value.
 ***************************************************************/
 #include "brute-force.hpp"
-#include "permutation.hpp"
+#include "rand.hpp"
 #include "stopwatch.hpp"
   Solver::Solver() {
     tourLength = 0;

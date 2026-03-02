@@ -70,9 +70,7 @@
                 j++;
             }
             while (perm1(tour, tourLength) && j < toursPerGeneration) {
-                float roll = getRandomFloat(0, 1);//gets random float between 0 and 1 for mutation chance
-                roll *= 100;
-                if (roll <= mutationRate) mutate(tour);// if mutation rate is 25%, numbers <= 25 will mutate
+                mutate(tour);
                 processTour(tour);
                 data.toursSearched++;
                 j++;
@@ -86,13 +84,19 @@
     void Evolution::mutate(int* tour) {
         //can be 1 2 or 3 mutations
         //determined by a random roll
-        float roll = getRandomFloat(0, 1);
+        //uses that same roll to calculate other parameters of the mutation
+        //uses only 1 randoim number for each mutation for speed
+        float roll = getRandomFloat(0, 1);//gets random float between 0 and 1 for mutation chance
+        roll *= 100;
+        if (roll > mutationRate) return;// if mutation rate is 25%, numbers <= 25 will mutate
         int mutations;
-        if (roll < 0.6) mutations = 1;
-        else if (roll < 0.95) mutations = 2;
+        //muation count follows normal distribution
+        if (roll < (0.68*mutationRate)) mutations = 1;
+        else if (roll < (0.95*mutationRate)) mutations = 2;
         else mutations = 3;
+        std::string rollstr = std::to_string(roll);
         while (mutations != 0) {
-            int mutationPoint = getRandomInt(0, (tourLength-1));//swamp the random point with its opposite point
+            int mutationPoint = rollstr.back() % tourLength;//takes a random value from the roll and calculates the mutation point
             int mirrorPoint = (tourLength - 1) - mutationPoint;
             int temp = tour[mutationPoint];
             tour[mutationPoint] = tour[mirrorPoint];

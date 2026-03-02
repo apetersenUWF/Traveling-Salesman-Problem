@@ -9,8 +9,10 @@ class Menu{
     BruteForceResults runBF(int i);
     EvolutionResults runGA();
     void printGAResult(EvolutionResults& result);
-    bool createOutputFiles();
+    bool createGAOutputFile();
+    bool createBFOutputFile();
     bool saveBFData(std::vector<BruteForceResults>& bfData);
+    std::vector<BruteForceResults> loadBFData();
     bool appendGAData(EvolutionResults& gaData);
   public:
     Menu();

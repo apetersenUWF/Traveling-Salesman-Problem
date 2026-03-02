@@ -1,7 +1,7 @@
 #ifndef EVOLUTION_HPP
 #define EVOLUTION_HPP
 #include "graph.hpp"
-const int ELITE_OFFSPRING_MAX = 3;
+const int ELITE_OFFSPRING_MAX = 8;
 struct EvolutionResults{
     int tourLength;
     int toursPerGeneration;
@@ -10,8 +10,10 @@ struct EvolutionResults{
     float bestTour;
     double timeToSolve;
     int toursSearched;
+    float bfOptimal;
+    double bfOptimalTime;
     float percentOptimal;
-    float percentOptimalTime;
+    double percentOptimalTime;
 };
 class Evolution{
     Graph* graph;

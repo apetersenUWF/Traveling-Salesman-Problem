@@ -24,8 +24,8 @@
     tour = new int[tourLength];
     this->graph = graph;
     int i = 0;
-    for (int j = 0; j <= tourLength; j++) if (j != START_END_POINT) tour[i++] = j;
-    bestTour = graph->getTourDistance(tour, tourLength);
+    for (int j = 0; j <= tourLength; j++) if (j != START_END_POINT) tour[i++] = j;//generate the first tour, include every city except the starting point
+    bestTour = graph->getTourDistance(tour, tourLength);//initialize the first tour as the best tour
   }
   Solver::~Solver() {
     delete [] tour;
@@ -35,13 +35,13 @@
     StopWatch timer;
     data.tourLength = tourLength;
     data.toursToSolve = 0;
-    timer.start();
-    while (perm1(tour, tourLength)) {
-      data.toursToSolve++;
-      float x = graph->getTourDistance(tour, tourLength);
+    timer.start();//start timing
+    while (perm1(tour, tourLength)) {//while we still have permutations to check, permute tour
+      data.toursToSolve++;//count tour
+      float x = graph->getTourDistance(tour, tourLength);//check the length of this permutation
       if (x < bestTour) bestTour = x;//keep track of lowest tour distance found
     }
-    timer.stop();
+    timer.stop();//stop timing
     data.bestTour = bestTour;
     data.timeToSolve = timer.getElapsedTime();
     return data;

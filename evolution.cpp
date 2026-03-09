@@ -34,8 +34,8 @@
         tour = new int[tourLength];
         elite = new int[tourLength];
         int i = 0;
-        for (int j = 0; j <= tourLength; j++) {
-            if (j != START_END_POINT) {
+        for (int j = 0; j <= tourLength; j++) {//generate the first tour, include every city except the starting point
+            if (j != START_END_POINT) {//initialize tour and elitw to be the first permutation
                 tour[i] = j;
                 elite[i] = j;
                 i++;
@@ -49,34 +49,35 @@
     }
     EvolutionResults Evolution::run() {
         EvolutionResults data;
-        data.tourLength = tourLength;
+        data.tourLength = tourLength;//save the current parameters for this run
         data.toursPerGeneration = toursPerGeneration;
         data.generations = generations;
         data.mutationRate = mutationRate;
         data.toursSearched = 0;
         StopWatch timer;
-        timer.start();
+        timer.start();//start timing
         for (int i = 0; i < generations; i++) {
             int j = 0;
+            //for every new generation, the elite will have a random number of offspring from [1, ELITE_OFFSPING_MAX]
             int eliteOffspringNum = getRandomInt(1, ELITE_OFFSPRING_MAX);
             int parent[tourLength];
-            for (int k = 0; k < tourLength; k++) parent[k] = elite[k];
+            for (int k = 0; k < tourLength; k++) parent[k] = elite[k];//save the elite as the parent incase one of the children becomes the new elite
             for (int h = 0; h < eliteOffspringNum; h++) {
                 int eliteChild[tourLength];
                 for (int g = 0; g < tourLength; g++) eliteChild[g] = parent[g];//copy elite to its child
-                mutate(eliteChild);
+                mutate(eliteChild);//try to mutate the child
                 processTour(eliteChild);
-                data.toursSearched++;
-                j++;
+                data.toursSearched++;//count a tour searched
+                j++;//count a tour from the generation
             }
-            while (perm1(tour, tourLength) && j < toursPerGeneration) {
-                mutate(tour);
+            while (perm1(tour, tourLength) && j < toursPerGeneration) {//while there are still permutations and more tours in this generation, permute
+                mutate(tour);//try mutating
                 processTour(tour);
                 data.toursSearched++;
                 j++;
             }
         }
-        timer.stop();
+        timer.stop();//stop timing
         data.bestTour = bestTour;
         data.timeToSolve = timer.getElapsedTime();
         return data;
@@ -86,15 +87,17 @@
         //determined by a random roll
         //uses that same roll to calculate other parameters of the mutation
         //uses only 1 randoim number for each mutation for speed
+        //a mutation swaps opposite array elements at random points
         float roll = getRandomFloat(0, 1);//gets random float between 0 and 1 for mutation chance
-        roll *= 100;
-        if (roll > mutationRate) return;// if mutation rate is 25%, numbers <= 25 will mutate
+        roll *= 100;//convert to 0-100 percentage
+        if (roll > mutationRate) return;//if mutation rate is 25%, numbers <= 25 will mutate
+        //rolled a valid number, begin the mutation process
         int mutations;
         //muation count follows normal distribution
         if (roll < (0.68*mutationRate)) mutations = 1;
         else if (roll < (0.95*mutationRate)) mutations = 2;
         else mutations = 3;
-        std::string rollstr = std::to_string(roll);
+        std::string rollstr = std::to_string(roll);//convert the float to a string to peel numbers off the end
         while (mutations != 0) {
             int mutationPoint = rollstr.back() % tourLength;//takes a random value from the roll and calculates the mutation point
             int mirrorPoint = (tourLength - 1) - mutationPoint;

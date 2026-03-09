@@ -10,7 +10,7 @@ class Graph{
   std::vector<float> adjMatrix;//holds the edge weights for the undirected complete graph, 2d array mapped to 1d
   public:
   Graph();
-  Graph(const std::string &filename);
+  Graph(const std::string &filename);//generates a graph from distances file
   float at(const unsigned int i, const unsigned int j) const;//returns the value of arrray[i][j] without boundary checks for speed
   int size();//returns the nodeCount
   float getTourDistance(int* tour, int tourSize) const;//returns the total distance of ma tour

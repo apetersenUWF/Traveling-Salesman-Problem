@@ -15,13 +15,18 @@
 #include <fstream>
 #include "menu.hpp"
 
-    Menu::Menu() {
-        cities = new Graph(DEFAULT_FILE);
+///////////////////////////////////////////////////////////////////////
+    Menu::Menu() {cities = new Graph(DEFAULT_FILE);}
+    Menu::~Menu() {delete cities;}
+///////////////////////////////////////////////////////////////////////
+//Main algorithm run logic
+    BruteForceResults Menu::runBF(int i) {
+        Solver solver(cities, i);
+        return solver.run();
     }
-    Menu::~Menu() {
-        delete cities;
-    }
+
     EvolutionResults Menu::runGA() {
+        //takes some io parameters from the user and runs the ga with them
         std::cout << "Please enter the number of cities to run the evolutionary algorithm with (10-13): ";
         int numCities = 0;
         while (numCities < 10 || numCities > 13) std::cin >> numCities;
@@ -37,6 +42,7 @@
         Evolution darwin(cities, numCities, numTours, numGenerations, mutationRate);
         return darwin.run();
     }
+
     void Menu::run() {
         if (!createGAOutputFile()) return;//try to create output file, if it fails exit program
         std::cout << "Welcome to the Traveling Salesman Problem Solver" << std::endl;
@@ -49,7 +55,7 @@
         if (userInput == 'X') {
             if (!createBFOutputFile()) return;
             std::cout << "Now running a brute force check..." << std::flush;
-            for (int i = 10; i <= 13; i++) {
+            for (int i = 10; i <= 13; i++) {//run brute force for 10-13 cities
                 bruteForceData.push_back(runBF(i));
                 std::cout << "..." << std::flush;
             }
@@ -58,11 +64,16 @@
             saveBFData(bruteForceData);
             std::cout << "Results saved to brute-force-results.csv" << std::endl;
         }
-        else {bruteForceData = loadBFData();}
+        else {bruteForceData = loadBFData();}//user chose to skip brute-force, load predefined data
         std::cout << "Now running an evolutionary algorithm to compare results" << std::endl;
         std::cout << "Limit (G x N) < 50000 for the algorithm to complete in under a second" << std::endl;
         std::cout << "Enter Ctrl+C to stop the program at any time" << std::endl;
         while (true) {
+            //until the user terminates
+            //promp the user for parameters
+            //run the ga
+            //append the results to the data file
+            //print the results to the terminal
             EvolutionResults result = runGA();
             result.bfOptimal = bruteForceData[result.tourLength - 10].bestTour;
             result.bfOptimalTime = bruteForceData[result.tourLength - 10].timeToSolve;
@@ -72,11 +83,11 @@
             printGAResult(result);
         }
     }
-    BruteForceResults Menu::runBF(int i) {
-        Solver solver(cities, i);
-        return solver.run();
-    }
-    void Menu::printGAResult(EvolutionResults& result) {
+
+///////////////////////////////////////////////////////////////////////
+//Terminal and Filo I/O Logics
+
+    void Menu::printGAResult(EvolutionResults& result) {//prints ga results to the terminal
         std::cout << std::setfill('-') << std::setw(50) << "-" << std::endl;
         std::cout << result.tourLength << " cities" << std::endl;
         std:: cout << "Brute-Force cost = " << result.bfOptimal << std::endl;
@@ -86,6 +97,7 @@
         std:: cout << "GA Optimal Percentage = " << result.percentOptimal << "%" << std::endl;
         std::cout << std::setfill('-') << std::setw(50) << "-" << std::endl;
     }
+
     bool Menu::createGAOutputFile() {
         std::ofstream ga_ofs("genetic-algorithm-results.csv");
         if (!ga_ofs.is_open()) {//if a file doesnt open terminate the program before doing anything
@@ -104,6 +116,7 @@
         ga_ofs.close();
         return true;
     }
+
     bool Menu:: createBFOutputFile() {
         std::ofstream bf_ofs("brute-force-results.csv");//open the output files to hold data
         if (!bf_ofs.is_open()) {//if a file doesnt open terminate the program before doing anything
@@ -114,6 +127,7 @@
         bf_ofs.close();
         return true;
     }
+
     bool Menu::saveBFData(std::vector<BruteForceResults>& bfData) {
         std::ofstream bf_ofs("brute-force-results.csv", std::ios::app);//open the output files to hold data
         if (!bf_ofs.is_open()) return false;
@@ -125,6 +139,7 @@
         bf_ofs.close();
         return true;
     }
+
     std::vector<BruteForceResults> Menu::loadBFData() {
         std::ifstream bf_ifs("brute-force-results.csv");
         std::vector<BruteForceResults> bfresults;
@@ -145,6 +160,7 @@
         bf_ifs.close();
         return bfresults;
     }
+    
     bool Menu::appendGAData(EvolutionResults& gaData) {
         std::ofstream ga_ofs("genetic-algorithm-results.csv", std::ios::app);//open the output files to hold data
         if (!ga_ofs.is_open()) return false;

@@ -15,6 +15,9 @@
 #include "stopwatch.hpp"
 #include "rand.hpp"
 #include <iostream>
+
+///////////////////////////////////////////////////////////////////////
+
     Evolution::Evolution() {
         graph = nullptr;
         tourLength = 0;
@@ -25,6 +28,7 @@
         elite = nullptr;
         bestTour = 0;
     }
+
     Evolution::Evolution(Graph* graph, int tourLength, int toursPerGeneration, int generations, float mutationRate) {
         this->graph = graph;
         this->tourLength = tourLength;
@@ -43,10 +47,24 @@
         }
         bestTour = graph->getTourDistance(tour, tourLength);
     }
+
     Evolution::~Evolution() {
         delete [] tour;
         delete [] elite;
     }
+
+///////////////////////////////////////////////////////////////////////
+
+    void Evolution::processTour(int* tour) {
+    float x = graph->getTourDistance(tour, tourLength);//check the value of this new tour
+    if (x < bestTour) {//if its the best, save its value and save it to the elite
+        bestTour = x;
+        for (int i = 0; i < tourLength; i++) elite[i] = tour[i];//copy tour to the elite if its better
+    }
+}
+
+///////////////////////////////////////////////////////////////////////
+//Main GA Logic
     EvolutionResults Evolution::run() {
         EvolutionResults data;
         data.tourLength = tourLength;//save the current parameters for this run
@@ -82,6 +100,7 @@
         data.timeToSolve = timer.getElapsedTime();
         return data;
     }
+
     void Evolution::mutate(int* tour) {
         //can be 1 2 or 3 mutations
         //determined by a random roll
@@ -99,18 +118,13 @@
         else mutations = 3;
         std::string rollstr = std::to_string(roll);//convert the float to a string to peel numbers off the end
         while (mutations != 0) {
-            int mutationPoint = rollstr.back() % tourLength;//takes a random value from the roll and calculates the mutation point
+            //for each mut, take the digit from the back of the random float
+            //make that the swap index and swap with the index opposite of it
+            int mutationPoint = rollstr.back() % tourLength;
             int mirrorPoint = (tourLength - 1) - mutationPoint;
             int temp = tour[mutationPoint];
             tour[mutationPoint] = tour[mirrorPoint];
             tour[mirrorPoint] = temp;
             mutations--;
-        }
-    }
-    void Evolution::processTour(int* tour) {
-        float x = graph->getTourDistance(tour, tourLength);//check the value of this new tour
-        if (x < bestTour) {//if its the best, save its value and save it to the elite
-            bestTour = x;
-            for (int i = 0; i < tourLength; i++) elite[i] = tour[i];//copy tour to the elite if its better
         }
     }

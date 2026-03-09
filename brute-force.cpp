@@ -13,6 +13,9 @@
 #include "brute-force.hpp"
 #include "rand.hpp"
 #include "stopwatch.hpp"
+
+///////////////////////////////////////////////////////////////////////
+
   Solver::Solver() {
     tourLength = 0;
     tour = nullptr;
@@ -30,6 +33,9 @@
   Solver::~Solver() {
     delete [] tour;
   }
+
+///////////////////////////////////////////////////////////////////////
+
   BruteForceResults Solver::run() {//runs the brute force algorithm for all permutations of tours
     BruteForceResults data;//stores tourLength, timeToSolve, and bestTour
     StopWatch timer;

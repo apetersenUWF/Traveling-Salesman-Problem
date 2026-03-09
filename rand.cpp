@@ -9,7 +9,7 @@
 ***************************************************************/
 #include "rand.hpp"
 #include <random>
-bool perm1(int s[], int size) {
+bool perm1(int s[], int size) {//swaps array s in place to create the next permutation
     int m, k, p , q, i;
     m = size-2;
     while(s[m]>s[m+1])

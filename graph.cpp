@@ -14,6 +14,8 @@
 #include <iomanip>
 #include "graph.hpp"
 
+///////////////////////////////////////////////////////////////////////
+
   Graph::Graph() {
     nodeCount = 0;
   }
@@ -39,28 +41,16 @@
     }
   }
 
+///////////////////////////////////////////////////////////////////////
+//Getters
   float Graph::at(const unsigned int i, const unsigned int j) const {//returns the value of arrray[i][j] without boundary checks for speed{}
     return adjMatrix[(i*DEFAULT_NODE_COUNT) + j];
   }
 
   int Graph::size() {return nodeCount;}//returns the nodeCount
 
-  void Graph::print() const {
-    printf("%-7s", " ");
-    for (unsigned int j = 0; j < DEFAULT_NODE_COUNT; j++) {
-      printf("%-7d", j);
-    }
-    printf("\n");
-    for (unsigned int i = 0; i < DEFAULT_NODE_COUNT; i++) {
-      printf("%-7d", i);
-      for (unsigned int j = 0; j < DEFAULT_NODE_COUNT; j++) {
-        float x = adjMatrix[(i*DEFAULT_NODE_COUNT) + j];
-        std::cout << std::setprecision(4) << std::setw(5) << std::left << x << "  ";
-      }
-      printf("\n");
-    }
-  }
-
+///////////////////////////////////////////////////////////////////////
+//Main distance Logic
   float Graph::getTourDistance(int* tour, int tourSize) const {//finds the total distance of a tour
     float distance = 0.0;
     int currentCity = START_END_POINT;//initialize start point
@@ -71,3 +61,21 @@
     distance += at(currentCity, START_END_POINT);//add the distance from the last city of the tour back to the starting point
     return distance;
   }
+
+///////////////////////////////////////////////////////////////////////
+
+  void Graph::print() const {//prints the adj matrix, used for testing
+  printf("%-7s", " ");
+  for (unsigned int j = 0; j < DEFAULT_NODE_COUNT; j++) {
+    printf("%-7d", j);
+  }
+  printf("\n");
+  for (unsigned int i = 0; i < DEFAULT_NODE_COUNT; i++) {
+    printf("%-7d", i);
+    for (unsigned int j = 0; j < DEFAULT_NODE_COUNT; j++) {
+      float x = adjMatrix[(i*DEFAULT_NODE_COUNT) + j];
+      std::cout << std::setprecision(4) << std::setw(5) << std::left << x << "  ";
+    }
+    printf("\n");
+  }
+}

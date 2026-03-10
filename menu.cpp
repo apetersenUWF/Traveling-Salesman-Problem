@@ -14,6 +14,7 @@
 #include <iomanip>
 #include <fstream>
 #include "menu.hpp"
+#include "rand.hpp"
 
 ///////////////////////////////////////////////////////////////////////
     Menu::Menu() {cities = new Graph(DEFAULT_FILE);}
@@ -74,16 +75,30 @@
             //run the ga
             //append the results to the data file
             //print the results to the terminal
-            EvolutionResults result = runGA();
+            EvolutionResults result;
+            if (userInput == '~') result = runRandomGA();//entry to run lots of random trials
+            else result = runGA();
+
             result.bfOptimal = bruteForceData[result.tourLength - 10].bestTour;
             result.bfOptimalTime = bruteForceData[result.tourLength - 10].timeToSolve;
             result.percentOptimal = (result.bestTour / result.bfOptimal) * 100;
             result.percentOptimalTime = (result.timeToSolve / result.bfOptimalTime) * 100;
-            appendGAData(result);
-            printGAResult(result);
+            appendGAData(result, bruteForceData);
+            if (userInput != '~') printGAResult(result);
         }
     }
 
+    EvolutionResults Menu::runRandomGA() {
+        int numCities, numTours, numGenerations;
+        float mutationRate;
+
+        numCities = getRandomInt(10, 13);
+        numTours = getRandomInt(500, 10000);
+        numGenerations = 100000/numTours;
+        mutationRate = getRandomFloat(0, 70);
+        Evolution darwin(cities, numCities, numTours, numGenerations, mutationRate);
+        return darwin.run();
+    }
 ///////////////////////////////////////////////////////////////////////
 //Terminal and Filo I/O Logics
 
@@ -105,14 +120,11 @@
             return false;
         }
         ga_ofs << "#Cities" << ",";
-        ga_ofs << "Gens" << ",";
-        ga_ofs << "ToursPerGen" << ",";
-        ga_ofs << "Mut%" << ",";
-        ga_ofs << "Best" << ",";
-        ga_ofs << "TTS(s)" << ",";
-        ga_ofs << "Searches" << ",";
-        ga_ofs << "Optim%" << ",";
-        ga_ofs << "OptimT%" << std::endl;
+        ga_ofs << "BF Cost" << ",";
+        ga_ofs << "BF TTS (s)" << ",";
+        ga_ofs << "GA Cost" << ",";
+        ga_ofs << "GA TTS (s)" << ",";
+        ga_ofs << "Optim%" << std::endl;
         ga_ofs.close();
         return true;
     }
@@ -161,18 +173,15 @@
         return bfresults;
     }
     
-    bool Menu::appendGAData(EvolutionResults& gaData) {
+    bool Menu::appendGAData(EvolutionResults& gaData, std::vector<BruteForceResults>& bfData) {
         std::ofstream ga_ofs("genetic-algorithm-results.csv", std::ios::app);//open the output files to hold data
         if (!ga_ofs.is_open()) return false;
         ga_ofs << gaData.tourLength << ",";
-        ga_ofs << gaData.generations << ",";
-        ga_ofs << gaData.toursPerGeneration << ",";
-        ga_ofs << gaData.mutationRate<< ",";
+        ga_ofs << bfData[gaData.tourLength-10].bestTour << ",";
+        ga_ofs << bfData[gaData.tourLength-10].timeToSolve << ",";
         ga_ofs << gaData.bestTour << ",";
         ga_ofs << gaData.timeToSolve<< ",";
-        ga_ofs << gaData.toursSearched << ",";
-        ga_ofs << gaData.percentOptimal << ",";
-        ga_ofs << gaData.percentOptimalTime << std::endl;
+        ga_ofs << gaData.percentOptimal << std::endl;
         ga_ofs.close();
         return true;
     }

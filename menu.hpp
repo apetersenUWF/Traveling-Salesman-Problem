@@ -13,10 +13,11 @@ class Menu{
     bool createBFOutputFile();
     bool saveBFData(std::vector<BruteForceResults>& bfData);
     std::vector<BruteForceResults> loadBFData();
-    bool appendGAData(EvolutionResults& gaData);//appends new ga results to the end of the genetic-algorithm-results.csv file
+    bool appendGAData(EvolutionResults& gaData, std::vector<BruteForceResults>& bfData);//appends new ga results to the end of the genetic-algorithm-results.csv file
   public:
     Menu();
     ~Menu();
     void run();
+    EvolutionResults runRandomGA();
 };
 #endif

@@ -8,7 +8,8 @@ struct EvolutionResults{
     int generations;//generations to run
     float mutationRate;//percent chance of a mutation
     float bestTour;//shortest tour distance found so far
-    double timeToSolve;//total number of tours checked, should finish as gens*toursPerGen
+    int toursSearched;
+    double timeToSolve;
     float bfOptimal;//optimal solution found for brute force of the same tourlength
     double bfOptimalTime;//time brute force took to find the optimal soln
     float percentOptimal;

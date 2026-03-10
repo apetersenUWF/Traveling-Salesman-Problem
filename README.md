@@ -18,12 +18,12 @@ providing an alternative method of finding a decent solution to an otherwise int
 
 The algorithm will return 6 values that can be used to compare the genetic algorithm to the brute-force:
 
-Number of Cities
-Brute-Force Optimal Cost
-Brute-Force Time to Solve
-Genetic Algorithm Cost
-Genetic Algorithm Time to Solve
-Percent of the Optimal Solution the GA found
+# Number of Cities
+# Brute-Force Optimal Cost
+# Brute-Force Time to Solve
+# Genetic Algorithm Cost
+# Genetic Algorithm Time to Solve
+# Percent of the Optimal Solution the GA found
 
 The last value is the one to try and optimize as it compares the genetic algorithm's solution to the
 strictly optimal one.
@@ -44,10 +44,10 @@ It is recommended to do this everytime you run the brute force on a new system a
 based on hardware. The brute-force will take 5-10 minutes to complete. After this the brute force results will be stored in
 the csv file, then the program will prompt the user for parameters for the genetic algorithm. Parameters include:
 
-Number of Cities
-Number of Tours per Generation
-Number of Generations
-Mutation Rate (%)
+# Number of Cities
+# Number of Tours per Generation
+# Number of Generations
+# Mutation Rate (%)
 
 In order to ensure a runtime under 1s, it is recommended you use values where (num tours) * (num generations) < 50,000
 
